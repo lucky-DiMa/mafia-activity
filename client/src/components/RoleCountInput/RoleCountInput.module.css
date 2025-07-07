@@ -1,0 +1,46 @@
+.roleCountInputItem {
+    background: #712d02;
+    border: 3px #562103 solid;
+    border-radius: 5px;
+    margin: 0 0.3vw;
+}
+
+.roleCountInputButton {
+    color: #562103;
+    height: 2vw;
+    width: 2vw;
+    font-size: 1.5vw;
+    font-weight: bold;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    transition: 0.3s all;
+}
+
+.focused .roleCountInputButton {
+    background: #9b582c;
+}
+
+.roleCountInputButton:hover{
+    background: #9b582c;
+    transform: scale(1.1);
+}
+
+.roleCountInput {
+    width: 4vw;
+    font-size: 1.2vw;
+    text-align: center;
+    border-radius: 5px;
+    border: none;
+    background-color: #3a1601;
+    color: white;
+}
+
+.roleCountInput::-webkit-inner-spin-button {
+    -webkit-appearance: none;
+    margin: 0;
+}
+
+.roleCountInputContainer {
+    display: flex;
+}

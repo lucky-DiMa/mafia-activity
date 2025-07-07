@@ -1,0 +1,15 @@
+.leftTable {
+    width: 23%;
+    margin-left: 2%;
+    margin-right: 1%;
+}
+
+.selfName {
+    width: 100%;
+    font-size: 2vw;
+    text-wrap: wrap;
+}
+.selfAvatar {
+    width: 15vw;
+    height: 15vw;
+}

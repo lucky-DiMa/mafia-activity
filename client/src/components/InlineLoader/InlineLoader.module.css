@@ -1,0 +1,12 @@
+.loader {
+    background: none;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-content: center;
+    align-items: center;
+    justify-items: center;
+    height: 100%;
+    width: 100%;
+    z-index: 10;
+}

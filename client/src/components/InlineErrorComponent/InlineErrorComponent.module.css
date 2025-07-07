@@ -1,0 +1,14 @@
+.error {
+    display: flex;
+    width: 100%;
+    height: 100%;
+    text-align: center;
+    color: white;
+    place-items: center;
+    justify-content: center;
+    align-items: center;
+}
+p {
+    text-align: center;
+    font-size: 4vh;
+}

@@ -1,0 +1,61 @@
+:root {
+  font-family: system-ui, Avenir, Helvetica, Arial, sans-serif;
+  line-height: 1.5;
+  font-weight: 400;
+
+  color-scheme: light dark;
+  color: rgba(255, 255, 255, 0.87);
+  background-color: #242424;
+}
+
+#root {
+  max-width: 1280px;
+  margin: 0 auto;
+  padding: 2rem;
+  text-align: center;
+}
+
+body {
+  margin: 0;
+  display: flex;
+  place-items: center;
+  min-width: 320px;
+  min-height: 100vh;
+  align-items: center;
+}
+
+.green-button {
+  background-color: #4CAF50;
+  color: white;
+}
+
+.red-button {
+  background-color: #F44336;
+  color: white;
+}
+.dark-red-button {
+  background-color: #982d23;
+  color: white;
+}
+
+.green-button:enabled:hover {
+  background-color: #45A049;
+  transform: scale(1.05);
+}
+
+.red-button:enabled:hover {
+  background-color: #D32F2F;
+  transform: scale(1.05);
+}
+.dark-red-button:enabled:hover {
+  background-color: #7b1717;
+  transform: scale(1.05);
+}
+
+button:disabled {
+  cursor: not-allowed;
+}
+button:disabled{
+  background-color: rgba(80, 63, 63, 0.5);
+  cursor: not-allowed !important;
+}
