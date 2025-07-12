@@ -6,23 +6,7 @@ export interface IRoom extends Document {
     creator: Types.ObjectId;
     users: Map<string, Types.ObjectId>;
     instanceId: string;
-    rolesCount: {
-        'Мафия': number,
-        'Мирный житель': number,
-        'Доктор': number,
-        'Шериф': number,
-        'Красотка': number,
-        'Бессмертный': number,
-        'Детектив': number,
-        'Телохранитель': number,
-        'Маньяк': number,
-        'Оборотень': number,
-        'Босс': number,
-        'Охотник за головами': number,
-        'Самозванец': number,
-        'Свидетель': number,
-        'Камикадзе': number,
-    };
+    rolesCount: Map<string, number>;
     state: string;
     players: Record<string, {
         alive: boolean;
@@ -54,7 +38,7 @@ const roomSchema = new Schema<IRoom, IRoomModel>({
         ref: "users"
     },
     users: {
-        type: Map,
+        type: Array<Schema.Types.ObjectId>,
         of: {
             type: Schema.Types.ObjectId,
             ref: 'users'
@@ -70,36 +54,8 @@ const roomSchema = new Schema<IRoom, IRoomModel>({
         index: true,
     },
     rolesCount: {
-        type: {'Мафия': Number,
-            'Мирный житель': Number,
-            'Доктор': Number,
-            'Шериф': Number,
-            'Красотка': Number,
-            'Бессмертный': Number,
-            'Детектив': Number,
-            'Телохранитель': Number,
-            'Маньяк': Number,
-            'Оборотень': Number,
-            'Босс': Number,
-            'Охотник за головами': Number,
-            'Самозванец': Number,
-            'Свидетель': Number,
-            'Камикадзе': Number},
-        default: {'Мафия': 0,
-            'Мирный житель': 0,
-            'Доктор': 0,
-            'Шериф': 0,
-            'Красотка': 0,
-            'Бессмертный': 0,
-            'Детектив': 0,
-            'Телохранитель': 0,
-            'Маньяк': 0,
-            'Оборотень': 0,
-            'Босс': 0,
-            'Охотник за головами': 0,
-            'Самозванец': 0,
-            'Свидетель': 0,
-            'Камикадзе': 0}
+        type: Map,
+        of: Number
     },
     state: {
         type: String,
@@ -107,20 +63,23 @@ const roomSchema = new Schema<IRoom, IRoomModel>({
         unique: false,
     },
     players: {
-        type: {
-            alive: Boolean,
-            role: String,
-            put_on_voting: Number,
-            voted: Number,
-            available_to_put_on_voting: Boolean,
-            action_player: Number,
-            boss_check: Boolean,
-            boss_check_player: Number,
-            bonus_kill: Number,
-            bonus_kill_player: Number,
-            healed_self: Boolean,
+        type: Map,
+        of: {
+            type: {
+                alive: Boolean,
+                role: String,
+                put_on_voting: Number,
+                voted: Number,
+                available_to_put_on_voting: Boolean,
+                action_player: Number,
+                boss_check: Boolean,
+                boss_check_player: Number,
+                bonus_kill: Number,
+                bonus_kill_player: Number,
+                healed_self: Boolean,
+            }
         },
-        default: [],
+        default: {},
     }
 })
 

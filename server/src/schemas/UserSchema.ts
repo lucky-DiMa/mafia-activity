@@ -1,4 +1,5 @@
-import {Schema, model, Document, Types} from 'mongoose';
+import {Schema, model, Document, Types, Model} from 'mongoose';
+import {IRoomModel} from "./RoomSchema";
 
 interface IUser extends Document {
     _id: Types.ObjectId;
@@ -8,7 +9,11 @@ interface IUser extends Document {
     currentSocketId: string;
 }
 
-const UserSchema = new Schema<IUser>({
+export interface IUserModel extends Model<IUser> {
+    findByDiscordId(id: string): Promise<IUser | null>;
+}
+
+const UserSchema = new Schema<IUser, IUserModel>({
     _id: {type: Schema.Types.ObjectId, auto: true},
     id: {type: String, required: true},
     globalName: {type: String, required: true},
@@ -16,4 +21,8 @@ const UserSchema = new Schema<IUser>({
     currentSocketId: {type: String, required: true}
 });
 
-export const User = model<IUser>('User', UserSchema);
+UserSchema.statics.findByDiscordId = function (this: IUserModel, discordId: string) {
+    return this.findOne({id: discordId})
+}
+
+export const User = model<IUser, IRoomModel>('User', UserSchema);

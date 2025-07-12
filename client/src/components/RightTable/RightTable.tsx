@@ -7,8 +7,8 @@ import StartCreationRoomButton from "../StartCreatingRoomButton/StartCreationRoo
 
 interface RightTableProps {
     className: string;
-    room?: Room | null,
-    user?: User
+    room?: Room | null;
+    user?: User;
 }
 
 export default function RightTable({ room, user, className }: RightTableProps) {
@@ -28,7 +28,7 @@ export default function RightTable({ room, user, className }: RightTableProps) {
         else content = <StartCreationRoomButton onClick={handleStartCreatingRoomButtonClick}/>;
     }
     return (
-        <div  className={`${className} ${classes.rightTable}`}>
+        <div className={`${className} ${classes.rightTable}`}>
             { content }
         </div>
     )

@@ -1,11 +1,13 @@
 import classes from "./CreatingRoomInterface.module.css";
 import RoleCountEditor from "../RoleCountEditor/RoleCountEditor.tsx";
-import {useEffect, useState} from "react";
+import {useEffect, useRef, useState} from "react";
 import * as React from "react";
 import useFetch from "../../hooks/useFetch.ts";
 import APIService from "../../utils/APIService.ts";
 import InlineLoader from "../InlineLoader/InlineLoader.tsx";
 import InlineErrorComponent from "../InlineErrorComponent/InlineErrorComponent.tsx";
+import {roleCountsContainerRefSignal} from "../../signals/roleCountsContainerRefSignal.ts"
+import socket from "../../utils/socket.ts";
 
 interface CreatingRoomInterfaceProps {
     onCancel: () => void;
@@ -18,6 +20,10 @@ function CreatingRoomInterface({onCancel}: CreatingRoomInterfaceProps) {
         const roles = await APIService.getRoles(controller);
         setRoleCounts(roles.map((role) => ({...role, roleCount: 0})));
     });
+    const roleCountsContainerRef = useRef<HTMLDivElement | null>(null);
+    useEffect(() => {
+        roleCountsContainerRefSignal.value = roleCountsContainerRef;
+    }, []);
     useEffect(() => {
         const controller = new AbortController();
         fetchRoles(controller);
@@ -33,7 +39,7 @@ function CreatingRoomInterface({onCancel}: CreatingRoomInterfaceProps) {
 
     function handleCountChange(roleNumber: number, count: number) {
         if (count < 0) count = 0;
-        let nowRoleCount: number = roleCounts[roleNumber].roleCount;
+        const nowRoleCount: number = roleCounts[roleNumber].roleCount;
         let add = count - nowRoleCount;
         add = Math.min(add, 50 - totalPlayers);
         count = nowRoleCount + add;
@@ -55,10 +61,15 @@ function CreatingRoomInterface({onCancel}: CreatingRoomInterfaceProps) {
         }))
     }
 
+    function handleCreesteRoomButtonClick(e: React.MouseEvent<HTMLButtonElement, MouseEvent>) {
+        e.currentTarget.blur();
+        socket.emit('create-room', roleCounts);
+    }
+
     return (
         <div className={classes.creatingRoomInterface + " " + classes.show}>
             <h2>Создание комнаты:</h2>
-            {roleCounts && <div className={classes.roleCountEditorsGrid}>
+            {roleCounts && <div className={classes.roleCountEditorsGrid} ref={roleCountsContainerRef}>
                 {roleCounts && roleCounts.map((roleCount, roleNumber) => <RoleCountEditor key={roleNumber} roleNumber={roleNumber} {...roleCount}
                                                                             onCountChange={handleCountChange}/>)}
             </div>}
@@ -66,9 +77,9 @@ function CreatingRoomInterface({onCancel}: CreatingRoomInterfaceProps) {
             {error && <InlineErrorComponent message={"Ошибка получения ролей от сервера, пожалуйста, попробуйте позже или перзапустите активносте"}/>}
             <div className={classes.totalPlayers}>Общее количество участников: {totalPlayers} (не больше 50)</div>
             <div className={classes.creatingRoomInterfaceButtons}>
-                <button className={"green-button"} disabled={totalPlayers <= 2}>Создать</button>
+                <button className={"green-button"} disabled={totalPlayers <= 2} onClick={handleCreesteRoomButtonClick}>Создать</button>
                 <button className={"red-button"} onClick={handleCancelCreatingRoomButtonClick}>Отменить</button>
-                <button className={"dark-red-button"} disabled={!Boolean(totalPlayers)} onClick={handleClearRoleCountersButtonClick}>Очистить</button>
+                <button className={"dark-red-button"} disabled={!totalPlayers} onClick={handleClearRoleCountersButtonClick}>Очистить</button>
             </div>
         </div>
     );

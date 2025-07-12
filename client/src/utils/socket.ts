@@ -19,6 +19,7 @@ interface EmitEvents {
     'user-choice': (data: any) => void;
     'start-night': (data: any) => void;
     'request-current-room': (callback: (response: any) => void) => void;
+    'create-room': (data: any) => void;
 }
 
 const socket: Socket<ListenEvents, EmitEvents> = io('/', {

@@ -2,8 +2,9 @@ import express, { Express, Request, Response } from 'express';
 import { config } from "./config";
 import {Server, Socket} from 'socket.io';
 import { connectToMongo } from "./utils/mongodb";
-import { Room } from './schemas/RoomSchema';
+import {Room} from './schemas/RoomSchema';
 import rolesDescriptions from "./utils/rolesDescriptions";
+import {User} from "./schemas/UserSchema";
 
 (async () => await connectToMongo())()
 
@@ -110,6 +111,7 @@ async function getDiscordUser(accessToken: string): Promise<DiscordUser> {
 
 interface ListenEvents {
     'data-back': (data: any) => void;
+    'create-room': (data: any) => void;
 }
 
 interface EmitEvents {
@@ -164,8 +166,16 @@ wsServer.use(authenticateSocket);
 wsServer.on('connection', (socket: SocketType) => {
     console.log('Connected ');
     console.log(socket.data.discordUser.global_name);
+    User.
     socket.on('data-back', (data: any) => {
         console.log(data);
     })
-
+    socket.on('create-room', async (data: Array<{roleName: string, rolesDescription: string, roleCount: number}>) => {
+        const rolesCount: Map<string, number> = new Map();
+        data.forEach((value) => rolesCount.set(value.roleName, value.roleCount))
+        const r = await Room.insertOne({'users':, 'instanceId': socket.data.auth.instanceId, 'rolesCount': rolesCount});
+        console.log(r.state)
+        console.log(r.rolesCount)
+        Room.deleteOne({_id: r._id})
+    })
 })

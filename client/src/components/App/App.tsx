@@ -15,8 +15,8 @@ function App() {
     const [discordError, setDiscordError] = useState<boolean>(false);
     const [discordLoading, setDiscordLoading] = useState<boolean>(false);
     const [msg, setMsg] = useState<string>(config.discord.clientId);
-    // const [user, setUser] = useState<User | undefined>({id: '2844', avatar: 'fsdlf', global_name: 'dfshfsdhfkhd'});
-    const [user, setUser] = useState<User | undefined>(undefined);
+    const [user, setUser] = useState<User | undefined>({id: '2844', avatar: 'fsdlf', global_name: 'dfshfsdhfkhd'});
+    // const [user, setUser] = useState<User | undefined>(undefined);
     const [room, setRoom] = useState<Room | null | undefined>(undefined);
     // const [player, setPlayer] = useState<Player | null | undefined>(undefined);
 
@@ -80,7 +80,7 @@ function App() {
                 };
 
                 await discordSdk.commands.setActivity(activityOptions);
-            } catch (error) {
+            } catch  {
                 setDiscordError(true);
                 setDiscordLoading(false);
                 return
@@ -89,7 +89,7 @@ function App() {
             setDiscordError(false);
             setUser({id: auth.user.id, global_name: auth.user.global_name ? auth.user.global_name : auth.user.username, avatar: auth.user.avatar});
             setupSocket(accessToken);
-        } catch (error) {
+        } catch {
             setDiscordError(true);
             setDiscordLoading(false);
             return
